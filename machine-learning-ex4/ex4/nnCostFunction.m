@@ -92,11 +92,31 @@ J = J + regulator
 
 
 
+% Part 2 implementation
+% Performing forward and backpropogation for each sample in the training set
+for t = 1:m
 
+  a1 = [1; X(t,:)']; % '1' added for the bias unit
+  z2 = Theta1 * a1;
+  a2 = [1; sigmoid(z2)];
 
+  z3 = Theta2 * a2;
+  a3 = sigmoid(z3);
 
+  predictions = ([1:num_labels]==y(t))';
+  delta3 = a3 - predictions;
 
+  delta2 = (Theta2' * delta3) .* [1; sigmoidGradient(z2)];
+  delta2 = delta2(2:end); % Removing bias row
+  % Upgrade capital delta
+  Theta1_grad = Theta1_grad + delta2 * a1';
+  Theta2_grad = Theta2_grad + delta3 * a2';
 
+end
+
+% Compute values of D
+Theta1_grad = (1/m) * Theta1_grad + (lambda/m) * [zeros(size(Theta1, 1), 1) Theta1(:,2:end)];
+Theta2_grad = (1/m) * Theta2_grad + (lambda/m) * [zeros(size(Theta2, 1), 1) Theta2(:,2:end)];
 
 
 
