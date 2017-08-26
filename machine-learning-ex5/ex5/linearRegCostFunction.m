@@ -20,7 +20,7 @@ grad = zeros(size(theta));
 %
 
 
-predictions = X * theta
+predictions = X * theta;
 
 J = (1/(2*m))*sum(power((predictions - y),2))+ (lambda/(2*m)) * sum(power(theta(2:end),2));
 
